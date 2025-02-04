@@ -17,17 +17,17 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 				version = "v1",
 				contact = @Contact(
 						name = "Madan Reddy",
-						email = "tutor@eazybytes.com",
-						url = "https://www.eazybytes.com"
+						email = "tutor@ATPbytes.com",
+						url = "https://www.ATPbytes.com"
 				),
 				license = @License(
 						name = "Apache 2.0",
-						url = "https://www.eazybytes.com"
+						url = "https://www.ATPbytes.com"
 				)
 		),
 		externalDocs = @ExternalDocumentation(
 				description =  "ATPBank Accounts microservice REST API Documentation",
-				url = "https://www.eazybytes.com/swagger-ui.html"
+				url = "https://www.ATPbytes.com/swagger-ui.html"
 		)
 )
 @EnableJpaAuditing(auditorAwareRef = "auditAwareImpl")
