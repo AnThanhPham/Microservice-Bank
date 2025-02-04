@@ -1,0 +1,40 @@
+services:
+  accounts:
+    image: thanhan2403/microservice-accounts:1.0
+    container_name: accounts-ms
+    ports:
+      - 8080:8080
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - atp
+
+  cards:
+    image: thanhan2403/cards:1.0
+    container_name: cards-ms
+    ports:
+      - 9000:9000
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - atp
+
+  loans:
+    image: thanhan2403/loans:1.0
+    container_name: loans-ms
+    ports:
+      - 8090:8090
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - atp
+
+networks:
+  atp:
+    driver: bridge
