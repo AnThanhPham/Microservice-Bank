@@ -1,6 +1,7 @@
 package com.atp.accounts.controller;
 
 import com.atp.accounts.constants.AccountsConstants;
+import com.atp.accounts.dto.AccountsContactInfoDto;
 import com.atp.accounts.dto.CustomerDto;
 import com.atp.accounts.dto.ErrorResponseDto;
 import com.atp.accounts.dto.ResponseDto;
@@ -35,12 +36,15 @@ public class AccountsController {
 
     private final Environment environment;
 
+    private final AccountsContactInfoDto accountsContactInfoDto;
+
     @Value("${build.version}")
     private String buildVersion;
 
-    public AccountsController(IAccountsService iAccountsService, Environment environment) {
+    public AccountsController(IAccountsService iAccountsService, Environment environment, AccountsContactInfoDto accountsContactInfoDto) {
         this.iAccountsService = iAccountsService;
         this.environment = environment;
+        this.accountsContactInfoDto = accountsContactInfoDto;
     }
 
     @Operation(
@@ -217,5 +221,30 @@ public class AccountsController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(environment.getProperty("JAVA_HOME"));
+    }
+
+    @Operation(
+            summary = "Get Contact Info",
+            description = "Contact Info details that can be reached out in case of any issues"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    }
+    )
+    @GetMapping("/contact-info")
+    public ResponseEntity<AccountsContactInfoDto> getContactInfo() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(accountsContactInfoDto);
     }
 }
