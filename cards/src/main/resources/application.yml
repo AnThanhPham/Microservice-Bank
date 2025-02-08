@@ -17,15 +17,7 @@ spring:
   profiles:
     active:
       - "qa"
-
-build:
-  version: "3.0"
-
-cards:
-  message: "Welcome to ATPBank cards related local APIs "
-  contactDetails:
-    name: "Dragos Lech - Developer"
-    email: "dragos@eazybank.com"
-  onCallSupport:
-    - (412) 419-3491
-    - (915) 382-1932
+  application:
+    name: "cards"
+  config:
+    import: optional:configserver:http://localhost:8071/

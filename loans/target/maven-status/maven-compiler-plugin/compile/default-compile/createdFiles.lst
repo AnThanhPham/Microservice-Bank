@@ -2,6 +2,7 @@ com\atp\loans\service\ILoansService.class
 com\atp\loans\mapper\LoansMapper.class
 com\atp\loans\exception\LoanAlreadyExistsException.class
 com\atp\loans\dto\ErrorResponseDto.class
+com\atp\loans\dto\LoansContactInfoDto.class
 com\atp\loans\repository\LoansRepository.class
 com\atp\loans\exception\ResourceNotFoundException.class
 com\atp\loans\dto\LoansDto.class

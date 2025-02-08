@@ -2,6 +2,7 @@ F:\MainProject\MicroserviceBank\loans\src\main\java\com\atp\loans\audit\AuditAwa
 F:\MainProject\MicroserviceBank\loans\src\main\java\com\atp\loans\constants\LoansConstants.java
 F:\MainProject\MicroserviceBank\loans\src\main\java\com\atp\loans\controller\LoansController.java
 F:\MainProject\MicroserviceBank\loans\src\main\java\com\atp\loans\dto\ErrorResponseDto.java
+F:\MainProject\MicroserviceBank\loans\src\main\java\com\atp\loans\dto\LoansContactInfoDto.java
 F:\MainProject\MicroserviceBank\loans\src\main\java\com\atp\loans\dto\LoansDto.java
 F:\MainProject\MicroserviceBank\loans\src\main\java\com\atp\loans\dto\ResponseDto.java
 F:\MainProject\MicroserviceBank\loans\src\main\java\com\atp\loans\entity\BaseEntity.java

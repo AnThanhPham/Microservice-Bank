@@ -1,6 +1,8 @@
 server:
   port: 8080
 spring:
+  application:
+    name: "accounts"
   datasource:
     url: jdbc:h2:mem:accountdb
     driverClassName: org.h2.Driver
@@ -17,15 +19,5 @@ spring:
   profiles:
     active:
       - "prod"
-
-build:
-  version: "3.0"
-
-accounts:
-  message: "Welcome to ATPBank accounts related local APIs "
-  contactDetails:
-    name: "John Doe - Developer"
-    email: "john@atpbank.com"
-  onCallSupport:
-    - (555) 555-1234
-    - (555) 523-1345
+  config:
+    import: "optional:configserver:http://localhost:8071/"
