@@ -36,7 +36,7 @@ public class AccountsController {
 
     private final Environment environment;
 
-    private final AccountsContactInfoDto accountsContactInfoDto;
+    private AccountsContactInfoDto accountsContactInfoDto;
 
     @Value("${build.version}")
     private String buildVersion;
