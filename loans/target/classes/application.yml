@@ -36,3 +36,15 @@ management:
     web:
       exposure:
         include: "*"
+  endpoint:
+    shutdown:
+      access: unrestricted
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: "loans"
+    description: "ATP Bank Loans Application"
+    version: "1.0.0"

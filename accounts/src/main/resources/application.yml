@@ -35,3 +35,16 @@ management:
     web:
       exposure:
         include: "*"
+  endpoint:
+    shutdown:
+      access: unrestricted
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: "accounts"
+    description: "ATP Bank Accounts Application"
+    version: "1.0.0"
+
