@@ -236,14 +236,16 @@ public class AccountsController {
     @RateLimiter(name= "getJavaVersion", fallbackMethod = "getJavaVersionFallback")
     @GetMapping("/java-version")
     public ResponseEntity<String> getJavaVersion() {
+        logger.info("Inside getJavaVersion method");
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(environment.getProperty("JAVA_HOME"));
     }
 
     public ResponseEntity<String> getJavaVersionFallback(Throwable throwable) {
+        logger.info("Inside getJavaVersionFallback method");
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(HttpStatus.TOO_MANY_REQUESTS)
                 .body("Java 21");
     }
 
