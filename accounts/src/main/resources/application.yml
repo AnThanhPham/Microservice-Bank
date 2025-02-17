@@ -3,6 +3,10 @@ server:
 spring:
   application:
     name: "accounts"
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
   datasource:
     url: jdbc:mysql://localhost:3309/accountsdb
     username: root
@@ -61,4 +65,12 @@ logging:
     com:
       atp:
         accounts: DEBUG
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      slidingWindowSize: 10
+      permittedNumberOfCallsInHalfOpenState: 2
+      failureRateThreshold: 50
+      waitDurationInOpenState: 10000
 

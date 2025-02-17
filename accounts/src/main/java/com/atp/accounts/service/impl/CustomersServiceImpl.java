@@ -19,12 +19,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
 public class CustomersServiceImpl implements ICustomersService {
     private final AccountsRepository accountsRepository;
     private final CustomerRepository customerRepository;
     private final CardsFeignClient cardsFeignClient;
     private final LoansFeignClient loansFeignClient;
+
+    public CustomersServiceImpl(AccountsRepository accountsRepository, CustomerRepository customerRepository, CardsFeignClient cardsFeignClient, LoansFeignClient loansFeignClient) {
+        this.accountsRepository = accountsRepository;
+        this.customerRepository = customerRepository;
+        this.cardsFeignClient = cardsFeignClient;
+        this.loansFeignClient = loansFeignClient;
+    }
+
     @Override
     public CustomerDetailsDto fetchCustomerDetails(String mobileNumber, String correlationId) {
         Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
@@ -37,10 +44,15 @@ public class CustomersServiceImpl implements ICustomersService {
         res.setAccountsDto(AccountsMapper.mapToAccountsDto(accounts,new AccountsDto()));
 
         ResponseEntity<CardsDto> cardsDtoResponseEntity = cardsFeignClient.fetchCardDetails(mobileNumber, correlationId);
-        res.setCardsDto(cardsDtoResponseEntity.getBody());
-
         ResponseEntity<LoansDto> loansDtoResponseEntity = loansFeignClient.fetchLoanDetails(mobileNumber, correlationId);
-        res.setLoansDto(loansDtoResponseEntity.getBody());
+
+        if(null != loansDtoResponseEntity) {
+            res.setLoansDto(loansDtoResponseEntity.getBody());
+        }
+
+        if(null != cardsDtoResponseEntity) {
+            res.setCardsDto(cardsDtoResponseEntity.getBody());
+        }
 
         return res;
     }
