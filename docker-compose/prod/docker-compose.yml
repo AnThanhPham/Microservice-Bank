@@ -257,7 +257,7 @@ services:
       service: network-deploy-service
 
   configserver:
-    image: "thanhan2403/configserver:s12"
+    image: "thanhan2403/configserver:s13"
     container_name: configserver-ms
     ports:
       - "8071:8071"
@@ -277,7 +277,7 @@ services:
       OTEL_SERVICE_NAME: "configserver"
 
   eurekaserver:
-    image: "thanhan2403/eurekaserver:s12"
+    image: "thanhan2403/eurekaserver:s13"
     container_name: eurekaserver-ms
     ports:
       - "8070:8070"
@@ -298,12 +298,14 @@ services:
       OTEL_SERVICE_NAME: "eurekaserver"
 
   accounts:
-    image: "thanhan2403/accounts:s12"
+    image: "thanhan2403/accounts:s13"
     container_name: accounts-ms
     depends_on:
       configserver:
         condition: service_healthy
       eurekaserver:
+        condition: service_healthy
+      rabbit:
         condition: service_healthy
     healthcheck:
       test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
@@ -319,7 +321,7 @@ services:
       service: microservice-configserver-config
 
   loans:
-    image: "thanhan2403/loans:s12"
+    image: "thanhan2403/loans:s13"
     container_name: loans-ms
     healthcheck:
       test: "curl --fail --silent localhost:8090/actuator/health/readiness | grep UP || exit 1"
@@ -332,6 +334,8 @@ services:
         condition: service_healthy
       eurekaserver:
         condition: service_healthy
+      rabbit:
+        condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: "loans"
       OTEL_SERVICE_NAME: "loans"
@@ -340,7 +344,7 @@ services:
       service: microservice-configserver-config
 
   cards:
-    image: "thanhan2403/cards:s12"
+    image: "thanhan2403/cards:s13"
     container_name: cards-ms
     healthcheck:
       test: "curl --fail --silent localhost:9000/actuator/health/readiness | grep UP || exit 1"
@@ -353,6 +357,8 @@ services:
         condition: service_healthy
       eurekaserver:
         condition: service_healthy
+      rabbit:
+        condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: "cards"
       OTEL_SERVICE_NAME: "cards"
@@ -360,8 +366,20 @@ services:
       file: common-config.yml
       service: microservice-configserver-config
 
+  message:
+    image: "thanhan2403/message:s13"
+    container_name: message-ms
+    depends_on:
+      rabbit:
+        condition: service_healthy
+    environment:
+      SPRING_RABBITMQ_HOST: "rabbit"
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
   gatewayserver:
-    image: "thanhan2403/gatewayserver:s12"
+    image: "thanhan2403/gatewayserver:s13"
     container_name: gatewayserver-ms
     ports:
       - "8072:8072"
