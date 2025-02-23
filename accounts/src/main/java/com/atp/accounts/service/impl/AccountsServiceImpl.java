@@ -2,6 +2,7 @@ package com.atp.accounts.service.impl;
 
 import com.atp.accounts.constants.AccountsConstants;
 import com.atp.accounts.dto.AccountsDto;
+import com.atp.accounts.dto.AccountsMsgDto;
 import com.atp.accounts.dto.CustomerDto;
 import com.atp.accounts.entity.Accounts;
 import com.atp.accounts.entity.Customer;
@@ -12,6 +13,9 @@ import com.atp.accounts.mapper.CustomerMapper;
 import com.atp.accounts.repository.AccountsRepository;
 import com.atp.accounts.repository.CustomerRepository;
 import com.atp.accounts.service.IAccountsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,12 +23,15 @@ import java.util.Random;
 
 @Service
 public class AccountsServiceImpl implements IAccountsService {
+    private static final Logger log = LoggerFactory.getLogger(AccountsServiceImpl.class);
     private final AccountsRepository accountsRepository;
     private final CustomerRepository customerRepository;
+    private final StreamBridge streamBridge;
 
-    public AccountsServiceImpl(AccountsRepository accountsRepository, CustomerRepository customerRepository) {
+    public AccountsServiceImpl(AccountsRepository accountsRepository, CustomerRepository customerRepository, StreamBridge streamBridge) {
         this.accountsRepository = accountsRepository;
         this.customerRepository = customerRepository;
+        this.streamBridge = streamBridge;
     }
 
     /**
@@ -39,7 +46,16 @@ public class AccountsServiceImpl implements IAccountsService {
                     + customerDto.getMobileNumber());
         }
         Customer savedCustomer = customerRepository.save(customer);
-        accountsRepository.save(createNewAccount(savedCustomer));
+        Accounts accounts = accountsRepository.save(createNewAccount(savedCustomer));
+        sendCommunication(accounts,savedCustomer);
+    }
+
+    private void sendCommunication(Accounts account, Customer customer) {
+        var accountsMsgDto = new AccountsMsgDto(account.getAccountNumber(), customer.getName(),
+                customer.getEmail(), customer.getMobileNumber());
+        log.info("Sending Communication request for the details: {}", accountsMsgDto);
+        var result = streamBridge.send("sendCommunication-out-0", accountsMsgDto);
+        log.info("Is the Communication request successfully triggered ? : {}", result);
     }
 
     /**
